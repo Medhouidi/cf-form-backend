@@ -1,8 +1,6 @@
-
-<!doctype html>
-<html>
-  <body>
-    <h1>cf-form-backend is live</h1>
-    <p>Use POST /contact</p>
-  </body>
-</html>
+<form action="https://cf-form-backend.pages.dev/contact" method="POST">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="email" name="email" placeholder="Email" required>
+  <textarea name="message" placeholder="Message" required></textarea>
+  <button type="submit">Send</button>
+</form>
