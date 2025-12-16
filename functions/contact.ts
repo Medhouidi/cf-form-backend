@@ -1,8 +1,16 @@
+export async function onRequestOptions() {
+  return new Response(null, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type"
+    }
+  });
+}
+
 export async function onRequestPost(context: any) {
-  // Read incoming form data
   const formData = await context.request.formData();
 
-  // Extract fields
   const submission = {
     name: formData.get("name"),
     email: formData.get("email"),
@@ -12,20 +20,19 @@ export async function onRequestPost(context: any) {
     userAgent: context.request.headers.get("User-Agent")
   };
 
-  // Log to Cloudflare (viewable in dashboard)
-  console.log("📩 New form submission:", submission);
+  if (!submission.email || !submission.message) {
+    return new Response("Invalid submission", { status: 400 });
+  }
 
-  // Respond to client
+  console.log("New form submission:", submission);
+
   return new Response(
-    JSON.stringify({
-      success: true,
-      received: submission
-    }),
+    JSON.stringify({ success: true }),
     {
       headers: {
-        "Content-Type": "application/json"
-      },
-      status: 200
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
     }
   );
 }
